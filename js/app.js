@@ -21,15 +21,19 @@ function validarFormulario(e){
     buscarImagenes();
 };
 
-function buscarImagenes(){
+async function buscarImagenes(){
     const termino =  document.querySelector('#termino').value;
     const key = '34274561-84b93148e768e0fda4b3db506';
     const url = `https://pixabay.com/api/?key=${key}&q=${termino}&per_page=${registrosPorPagina}&page=${paginaActual}`;
 
-    fetch(url).then(respuesta => respuesta.json()).then(resultado => {
+    try {
+        const respuesta = await fetch(url);
+        const resultado = await respuesta.json();
         totalPaginas = calcularPaginas(resultado.totalHits);
         mostrarImagenes(resultado.hits);
-    });
+    } catch (error) {
+        console.log(error);
+    };
 };
 
 //generador de paginas
